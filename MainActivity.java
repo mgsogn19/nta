@@ -51,3 +51,23 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
+/*<?php
+    $con = mysqli_connect("localhost", "smg6135", "iamagod1026", "smg6135");
+    $userID = "smg6135";
+    $result = mysqli_query($con, "SELECT * FROM USER WHERE userID like '$userID';");
+    $response = array();
+    
+    while($row = mysqli_fetch_array($result)){
+        array_push($response, array("userPoint" => $row[4]));
+    }
+    
+    echo json_encode(array("response" => $response));
+    mysqli_close($con);
+?>  
+------This PHP returns the userPoint value from the table in an array call response like this
+ {
+	"response": [{
+		"userPoint": "0"
+	}]
+}
+-----Than why won't the final pointview point read out the userPoint?
