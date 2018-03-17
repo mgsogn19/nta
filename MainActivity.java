@@ -9,25 +9,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,49 +21,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final TextView idview = findViewById(R.id.userID);
-        final TextView userpoint = findViewById(R.id.point);
-        int point = 0;
+        final TextView idtext = (TextView) findViewById(R.id.userID);
+        final TextView point = (TextView) findViewById(R.id.point);
 
         Intent intent = getIntent();
-        String user = intent.getStringExtra("userID");
+        String userid = intent.getStringExtra("userID");
+        idtext.setText(userid);
 
-        idview.setText(user);
 
-        try{
-            HttpClient client = new DefaultHttpClient();
-            final String URL = "http://smg6135.cafe24.com/ogi.php";
-            HttpPost post = new HttpPost(URL + "?" + "userID=" + user);
 
-            HttpResponse response = client.execute(post);
+        Response.Listener<String> listener = new Response.Listener<String>() {
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray arr = new JSONArray("response");
 
-            String arr[] = new String[1];
-
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "utf-8"));
-            String line = null;
-            String page = "";
-            while((line = bufferedReader.readLine()) != null){
-                page += line;
+                    point.setText(arr.getJSONObject(0).getString("userPoint"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            JSONObject jsonObject = new JSONObject(page);
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
-            for(int i = 0; i < jsonArray.length(); i++){
-                jsonObject = jsonArray.getJSONObject(i);
-
-                arr[0] = jsonObject.getString("userPoint");
-            }
-            String data = arr[0];
-
-            userpoint.setText(data);
+        };
 
 
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
 
 
