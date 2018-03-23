@@ -1,5 +1,5 @@
 <?php
-    $con = mysqli_connect("localhost", "smg6135", "iamagod1026","smg6135");
+    $con = mysqli_connect("dbname, password etc");
     
     $userID = $_POST["userID"];
     $statement = mysqli_prepare($con, "SELECT * FROM USER WHERE userID = ?");
