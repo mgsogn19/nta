@@ -1,5 +1,5 @@
 <?php
-    $con = mysqli_connect("localhost", "smg6135", "iamagod1026", "smg6135");
+    $con = mysqli_connect("nane, pass, dbname");
     $userID = $_GET["userID"];
     $result = mysqli_query($con, "SELECT * FROM USER WHERE userID like '$userID';");
     $response = array();
